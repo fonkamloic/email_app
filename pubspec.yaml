@@ -25,6 +25,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   build_runner: ^1.7.2
   http: ^0.12.0+3
+  font_awesome_flutter: ^8.5.0
+  flutter_slidable: ^0.5.4
   json_serializable:
 
 dev_dependencies:
