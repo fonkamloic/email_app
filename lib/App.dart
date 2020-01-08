@@ -34,7 +34,7 @@ class _AppState extends State<App> {
             ),
             BottomNavigationBarItem(
               title: Text("Contacts"),
-              icon: Icon(FontAwesomeIcons.peopleCarry),
+              icon: Icon(Icons.people),
             ),
             BottomNavigationBarItem(
               title: Text("Calender"),
