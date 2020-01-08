@@ -1,42 +1,56 @@
-import 'package:email_app/AppDrawer.dart';
-import 'package:email_app/messagelist.dart';
+import 'package:email_app/InboxScreen.dart';
+import 'package:email_app/calenderScreen.dart';
+import 'package:email_app/contactScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   final String title;
 
   App({this.title});
 
   @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  int _selectedIndex = 0;
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 0,
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-//              setState(() {
-//                future =  Message.browse();
-//              });
-              },
-            )
-          ],
-          bottom: TabBar(tabs: <Widget>[
-            Tab(text: "Important",),
-            Tab(text: "Other",),
-          ],),
-        ),
-        drawer: AppDrawer(),
-        body: TabBarView(children: <Widget>[
-          MessageList(status: "important"),
-          MessageList(status: "other"),
 
-        ],),
+      child: Scaffold(
+        body: [
+          InboxScreen(),
+          ContactScreen(),
+          CalenderScreen(),
+        ].elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              title: Text("Inbox"),
+              icon: Icon(FontAwesomeIcons.inbox),
+            ),
+            BottomNavigationBarItem(
+              title: Text("Contacts"),
+              icon: Icon(FontAwesomeIcons.peopleCarry),
+            ),
+            BottomNavigationBarItem(
+              title: Text("Calender"),
+              icon: Icon(FontAwesomeIcons.calendar),
+            ),
+          ],
+          onTap: _onItemTab,
+          currentIndex: _selectedIndex,
+        ),
       ),
     );
+  }
+
+  void _onItemTab(index){
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 }
