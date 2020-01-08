@@ -5,25 +5,29 @@ import 'package:email_app/services/contactService.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ContactManager {
-  final BehaviorSubject<int> _countCounter = BehaviorSubject<int>();
+  final PublishSubject<String> _filterSubject = PublishSubject<String>();
+  final BehaviorSubject<int> _countSubject = BehaviorSubject<int>();
+  final PublishSubject<List<Contact>> _collectionSubject = PublishSubject();
 
-  Stream<int> get contactCounter => _countCounter.stream;
+  Sink<String> get inFilter => _filterSubject.sink;
 
-  Stream<int> filteredCounter({query}) => _countCounter.stream;
+  Stream<int> get count$ => _countSubject.stream;
 
-  Stream<List<Contact>> get contactListNow async* {
-    yield await ContactService.browse();
+//  Stream<int> filteredCounter({query}) => _countSubject.stream;
 
-//   Stream.fromFuture(ContactService.browse());
-  }
-
-  Stream<List<Contact>> filteredContactList({query}) async* {
-    yield await ContactService.browse(query: query);
-  }
-
-  //  Stream.fromFuture(ContactService.browse(query: query));
+  Stream<List<Contact>> get browse$ => _collectionSubject.stream;
 
   ContactManager() {
-    contactListNow.listen((list) => _countCounter.add(list.length));
+    _filterSubject.stream.listen((filter) async {
+      var contacts = await ContactService.browse(query: filter);
+
+      _collectionSubject.add(contacts);
+    });
+    _collectionSubject.listen((list) => _countSubject.add(list.length));
+  }
+
+  void dispose() {
+    _countSubject.close();
+    _filterSubject.close();
   }
 }
