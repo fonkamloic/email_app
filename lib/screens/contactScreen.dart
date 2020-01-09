@@ -6,7 +6,7 @@ import 'package:email_app/model/contact.dart';
 import 'package:email_app/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'contactManager.dart';
+import '../managers/contactManager.dart';
 
 class ContactScreen extends StatelessWidget {
   @override
