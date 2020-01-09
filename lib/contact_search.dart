@@ -1,5 +1,5 @@
 import 'package:email_app/contactListBuilder.dart';
-import 'package:email_app/contactManager.dart';
+import 'package:email_app/managers/contactManager.dart';
 import 'package:email_app/model/contact.dart';
 import 'package:email_app/provider.dart';
 import 'package:flutter/material.dart';
