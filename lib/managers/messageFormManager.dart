@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:email_app/manager.dart';
 import 'package:email_app/message.dart';
 import 'package:email_app/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MessageFormManager with Validation {
+class MessageFormManager with Validation implements Manager {
   final BehaviorSubject<String> _email = BehaviorSubject<String>.seeded("@");
   final BehaviorSubject<String> _subject = BehaviorSubject<String>();
   final BehaviorSubject<String> _body = BehaviorSubject<String>();
@@ -35,5 +36,12 @@ class MessageFormManager with Validation {
       yield true;
     }else
       yield false;
+  }
+
+  @override
+  void dispose() {
+    _body.close();
+    _subject.close();
+    _email.close();
   }
 }
