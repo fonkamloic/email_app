@@ -8,8 +8,6 @@ class ContactService {
 
   static Future browse({query}) async {
     http.Response response = await http.get(_url);
-
-    await Future.delayed(Duration(seconds: 1));
     String content = response.body;
     List collection = json.decode(content);
     Iterable<Contact> _contacts =
