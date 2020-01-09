@@ -1,16 +1,9 @@
 import 'package:email_app/message.dart';
-import 'package:email_app/messageFormManager.dart';
+import 'package:email_app/managers/messageFormManager.dart';
 import 'package:email_app/provider.dart';
 import 'package:flutter/material.dart';
 
-class MessageCompose extends StatefulWidget {
-  @override
-  _MessageComposeState createState() => _MessageComposeState();
-}
-
-class _MessageComposeState extends State<MessageCompose> {
-
-
+class MessageCompose extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MessageFormManager messageFormManager =
@@ -75,13 +68,10 @@ class _MessageComposeState extends State<MessageCompose> {
                     builder: (context, snapshot) {
                       return RaisedButton(
                         child: Text("SEND"),
-                        onPressed: ()async {
-                          if (snapshot.hasData) {
-                            Message message = await messageFormManager.submit();
-                            Navigator.pop(context, message);
-                            print("yes");
-                          } else
-                            print(snapshot.data);
+                        onPressed: () {
+                          Message message = messageFormManager.submit();
+                          Navigator.pop(context, message);
+                          print("yes");
                         },
                       );
                     }),
