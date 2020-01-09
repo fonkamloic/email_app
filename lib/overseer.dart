@@ -1,19 +1,36 @@
-import 'package:email_app/contactManager.dart';
-import 'package:email_app/counterManager.dart';
-import 'package:email_app/messageFormManager.dart';
+import 'package:email_app/managers/contactManager.dart';
+import 'package:email_app/managers/counterManager.dart';
+import 'package:email_app/manager.dart';
+import 'package:email_app/managers/messageFormManager.dart';
 
 class OverSeer {
-  Map<dynamic, dynamic> repository = {};
+  Map<dynamic, Manager> repository = {};
 
-  OverSeer() {
-    register(ContactManager, ContactManager());
-    register(CounterManager, CounterManager());
-    register(MessageFormManager, MessageFormManager());
-  }
+  Map<dynamic, Function> _factories = {
+    ContactManager: () => ContactManager(),
+    CounterManager: () => CounterManager(),
+    MessageFormManager: () => MessageFormManager()
+  };
+
+//  OverSeer() {
+//    register(ContactManager, ContactManager());
+//    register(CounterManager, CounterManager());
+//    register(MessageFormManager, MessageFormManager());
+//  }
+
+  _summon(name) => repository[name] = _factories[name]();
 
   register(name, object) {
     repository[name] = object;
   }
 
-  fetch(name) => repository[name];
+  fetch(name) =>
+      repository.containsKey(name) ? repository[name] : _summon(name);
+
+  release(name) {
+    Manager manager = repository[name];
+    manager.dispose();
+
+    repository.remove(name);
+  }
 }
