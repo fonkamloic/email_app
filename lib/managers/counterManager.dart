@@ -1,6 +1,7 @@
+import 'package:email_app/manager.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CounterManager{
+class CounterManager implements Manager{
 
   BehaviorSubject<int> _counter = BehaviorSubject<int>.seeded(0);
   int get _current => _counter.value;
@@ -9,4 +10,9 @@ class CounterManager{
 
   void increment() => _counter.add(_current + 1);
   void decrement() => _counter.add(_current - 1);
+
+  @override
+  void dispose() {
+    _counter.close();
+  }
 }

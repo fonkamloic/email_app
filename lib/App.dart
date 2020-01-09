@@ -1,6 +1,6 @@
-import 'package:email_app/InboxScreen.dart';
-import 'package:email_app/calenderScreen.dart';
-import 'package:email_app/contactScreen.dart';
+import 'package:email_app/screens/InboxScreen.dart';
+import 'package:email_app/screens/calenderScreen.dart';
+import 'package:email_app/screens/contactScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
