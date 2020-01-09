@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:email_app/manager.dart';
 import 'package:email_app/model/contact.dart';
 import 'package:email_app/services/contactService.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ContactManager {
+class ContactManager implements Manager{
   final PublishSubject<String> _filterSubject = PublishSubject<String>();
   final BehaviorSubject<int> _countSubject = BehaviorSubject<int>();
   final BehaviorSubject<List<Contact>> _collectionSubject = BehaviorSubject();
@@ -28,5 +29,6 @@ class ContactManager {
   void dispose() {
     _countSubject.close();
     _filterSubject.close();
+    _collectionSubject.close();
   }
 }
