@@ -1,18 +1,26 @@
 import 'package:email_app/App.dart';
-import 'package:email_app/overseer.dart';
-import 'package:email_app/provider.dart';
+import 'package:email_app/managers/counterManager.dart';
+import 'package:email_app/managers/messageFormManager.dart';
+import 'package:email_app/model/contact.dart';
 import 'package:flutter/material.dart';
+import 'package:sprinkle/Overseer.dart';
+import 'package:sprinkle/Provider.dart';
+import 'package:sprinkle/WebResourceManager.dart';
 
-void main() => runApp(emailApp());
+import 'services/contactService.dart';
 
-class emailApp extends StatelessWidget {
-  // This widget is the root of your application.
+void main() => runApp(EmailApp());
+
+class EmailApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      data: OverSeer(),
+      data: Overseer()
+          .register<MessageFormManager>(() => MessageFormManager())
+          .register<CounterManager>(() => CounterManager())
+          .register<WebResourceManager<Contact>>(
+              () => WebResourceManager<Contact>(ContactService())),
       child: MaterialApp(
-        title: 'Flutter Demo',
         theme: ThemeData(
             primarySwatch: Colors.indigo, accentColor: Colors.indigoAccent),
         home: App(
