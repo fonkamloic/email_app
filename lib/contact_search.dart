@@ -1,8 +1,9 @@
 import 'package:email_app/contactListBuilder.dart';
-import 'package:email_app/managers/contactManager.dart';
 import 'package:email_app/model/contact.dart';
-import 'package:email_app/provider.dart';
+
 import 'package:flutter/material.dart';
+import 'package:sprinkle/SprinkleExtension.dart';
+import 'package:sprinkle/WebResourceManager.dart';
 
 class ContactSearch extends SearchDelegate {
   @override
@@ -33,15 +34,13 @@ class ContactSearch extends SearchDelegate {
   }
 
   @override
-  Widget buildSuggestions(BuildContext context) { ContactManager manager = Provider.of(context).fetch(ContactManager);
-  manager.inFilter.add(query);
-//  if (query.length < 3) {
-//    return Center(
-//      child: Text("Type at least 3 letters to search"),
-//    );
-//  } else
+  Widget buildSuggestions(BuildContext context) {
+    WebResourceManager<Contact> manager =
+        context.fetch<WebResourceManager<Contact>>();
+    manager.inFilter.add(query);
+
     return ContactListBuilder(
-      stream: manager.browse$,
+      stream: manager.collection$,
       builder: (context, contact) => ListView.separated(
         itemCount: contact.length,
         itemBuilder: (BuildContext context, int index) {
@@ -55,6 +54,5 @@ class ContactSearch extends SearchDelegate {
         separatorBuilder: (context, index) => Divider(),
       ),
     );
-
   }
 }

@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:email_app/manager.dart';
 import 'package:email_app/model/contact.dart';
-import 'package:email_app/services/contactService.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ContactManager implements Manager{
+abstract class Service<T> {
+  Future<List<T>> browse({String filter});
+}
+
+class WebResourceManager<T> implements Manager {
   final PublishSubject<String> _filterSubject = PublishSubject<String>();
   final BehaviorSubject<int> _countSubject = BehaviorSubject<int>();
   final BehaviorSubject<List<Contact>> _collectionSubject = BehaviorSubject();
@@ -16,9 +19,11 @@ class ContactManager implements Manager{
 
   Stream<List<Contact>> get browse$ => _collectionSubject.stream;
 
-  ContactManager() {
-    _filterSubject.debounceTime(Duration(milliseconds: 500)).switchMap((filter) async* {
-      yield await ContactService.browse(query: filter);
+  WebResourceManager(Service service) {
+    _filterSubject
+        .debounceTime(Duration(milliseconds: 500))
+        .switchMap((filter) async* {
+      yield await service.browse(filter: filter);
     }).listen((contacts) async {
       _collectionSubject.add(contacts);
     });
@@ -32,3 +37,4 @@ class ContactManager implements Manager{
     _collectionSubject.close();
   }
 }
+
