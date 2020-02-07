@@ -1,16 +1,17 @@
-import 'package:email_app/managers/contactManager.dart';
+import 'package:email_app/managers/WebResourceManager.dart';
 import 'package:email_app/managers/counterManager.dart';
 import 'package:email_app/manager.dart';
 import 'package:email_app/managers/messageFormManager.dart';
+import 'package:email_app/model/contact.dart';
+import 'package:email_app/services/contactService.dart';
 
-class OverSeer {
+class Overseer {
   Map<dynamic, Manager> repository = {};
 
   Map<dynamic, Function> _factories = {
-    ContactManager: () => ContactManager(),
-    CounterManager: () => CounterManager(),
-    MessageFormManager: () => MessageFormManager()
+
   };
+//  OverSeer(this._factories);
 
 //  OverSeer() {
 //    register(ContactManager, ContactManager());
@@ -20,8 +21,10 @@ class OverSeer {
 
   _summon(name) => repository[name] = _factories[name]();
 
-  register(name, object) {
-    repository[name] = object;
+  Overseer register<T>(_factory) {
+    _factories[T] = _factory;
+
+    return this;
   }
 
   fetch(name) =>
