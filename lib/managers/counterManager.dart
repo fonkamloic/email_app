@@ -1,5 +1,5 @@
-import 'package:email_app/manager.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sprinkle/Manager.dart';
 
 class CounterManager implements Manager{
 
